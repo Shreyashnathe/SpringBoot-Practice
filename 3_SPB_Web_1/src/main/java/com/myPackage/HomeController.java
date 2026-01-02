@@ -11,4 +11,10 @@ public class HomeController {
         System.out.println("This is home controller");
         return "index.jsp";
     }
+
+    @RequestMapping("/add")
+    public String add(){
+        System.out.println("in Add method");
+        return "result.jsp";
+    }
 }
