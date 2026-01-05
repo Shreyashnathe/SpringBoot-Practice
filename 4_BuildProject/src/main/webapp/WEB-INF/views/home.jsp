@@ -31,10 +31,10 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
-					<a class="nav-link" href="home">Home</a>
+					<a class="nav-link" href="${pageContext.request.contextPath}/home">Home</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="viewalljobs">All Jobs</a>
+					<a class="nav-link" href="${pageContext.request.contextPath}/viewalljobs">All Jobs</a>
 				</li>
 
 				<li class="nav-item">
@@ -51,7 +51,7 @@
 		<div class="col-md-6">
 			<div class="card">
 				<div class="card-body text-center">
-					<a href="/viewalljobs" class="btn btn-primary">View All Jobs</a>
+					<a href="${pageContext.request.contextPath}/viewalljobs" class="btn btn-primary">View All Jobs</a>
 				</div>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 			<div class="card">
 				<div class="card-body text-center">
 
-					<a href="/addjob" class="btn btn-primary">Add Job</a>
+					<a href="${pageContext.request.contextPath}/addjob" class="btn btn-primary">Add Job</a>
 
 				</div>
 			</div>

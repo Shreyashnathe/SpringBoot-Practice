@@ -1,44 +1,29 @@
 package com.myPackage;
 
-import com.myPackage.model.JobPost;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class JobController {
 
-    @Autowired
-    private JobService service;
-
-
-    @GetMapping({"/", "home"})
+    @GetMapping({"/", "/home"})
     public String home() {
         return "home";
     }
 
-
-    @GetMapping("addjob")
+    @GetMapping({"/addjob", "/addJob"})
     public String addJob() {
         return "addjob";
     }
 
-
-    @PostMapping("handleForm")
-    public String handleForm(JobPost jobPost) {
-        service.addJob(jobPost);
-        return "success";
-
-    }
-
-    @GetMapping("viewalljobs")
-    public String viewJobs(Model m) {
-        List<JobPost> jobs = service.getAllJobs();
-        m.addAttribute("jobPosts", jobs);
-
+    @GetMapping({"/viewalljobs", "/viewall"})
+    public String viewAllJobs() {
         return "viewalljobs";
     }
 
+    @PostMapping("/handleForm")
+    public String handleForm() {
+        return "success";
+    }
 }

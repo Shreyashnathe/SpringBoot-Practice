@@ -31,8 +31,8 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="viewalljobs">All Jobs</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/viewalljobs">All Jobs</a></li>
                 <li class="nav-item"><a class="nav-link" href="https://telusko.com/">Contact</a></li>
             </ul>
         </div>
