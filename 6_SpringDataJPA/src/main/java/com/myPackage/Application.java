@@ -1,7 +1,7 @@
 package com.myPackage;
 
 import com.myPackage.model.Student;
-import com.myPackage.service.StudentService;
+import com.myPackage.repo.Repo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -10,18 +10,30 @@ import org.springframework.context.ApplicationContext;
 public class Application {
 
 	public static void main(String[] args) {
-		ApplicationContext context = SpringApplication.run(Application.class, args);
-        System.out.println("Application Started...");
+        ApplicationContext context = SpringApplication.run(Application.class, args);
 
-        Student student = context.getBean(Student.class);
-        student.setRollno(101);
-        student.setName("John Doe");
-        student.setDept("Computer Science");
+        Repo repository = context.getBean(Repo.class);
 
-        System.out.println("Student Details: " + student);
+        Student s1 = context.getBean(Student.class);
+        Student s2 = context.getBean(Student.class);
+        Student s3 = context.getBean(Student.class);
 
-        StudentService service = context.getBean(StudentService.class);
-        service.addStudent(student);
-	}
+        s1.setRollno(101);
+        s1.setName("Alice");
+        s1.setDept("Computer Science");
+
+        s2.setRollno(102);
+        s2.setName("Bob");
+        s2.setDept("Mechanical Engineering");
+
+        s3.setRollno(103);
+        s3.setName("Charlie");
+        s3.setDept("Electrical Engineering");
+
+        repository.save(s1);
+        repository.save(s2);
+        repository.save(s3);
+
+    }
 
 }
