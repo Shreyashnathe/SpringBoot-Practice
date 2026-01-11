@@ -51,4 +51,9 @@ public class ProductService {
         }
         return new Product(-1);
     }
+
+    public List<Product> searchProducts(String keyword) {
+        return productRepo.findByNameContainingOrDescriptionContainingOrCategoryContainingOrBrandContaining(
+                keyword, keyword, keyword, keyword);
+    }
 }

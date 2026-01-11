@@ -73,13 +73,24 @@ public class ProductController {
 
     @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id) {
-        Product deletedProduct = null;
-        try{
-            deletedProduct = productService.deleteProduct(id);
+        Product product = productService.getProductById(id);
+        if(product != null){
+            productService.deleteProduct(id);
             return new ResponseEntity<>("Deleted", HttpStatus.OK);
         }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
+        try{
+            List<Product> products = productService.searchProducts(keyword);
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        }
         catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -8,4 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ProductRepo extends JpaRepository<Product, Integer> {
+    List<Product> findByNameContainingOrDescriptionContainingOrCategoryContainingOrBrandContaining(
+            String name, String description, String category, String brand);
 }
