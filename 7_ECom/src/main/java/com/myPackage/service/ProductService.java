@@ -5,7 +5,9 @@ import com.myPackage.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -15,61 +17,21 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    private ProductRepo repo;
+    private ProductRepo productRepo;
 
-//    public ProductService(ProductRepo repo) {
-//        this.repo = repo;
-//    }
-
-    // Get All Products
-    public List<Product> getProducts() {
-        return repo.findAll();
+    public List<Product> getAllProducts() {
+        return productRepo.findAll();
     }
 
-    // Get Product by ID
     public Product getProductById(int id) {
-        return repo.findById(id).get();
+        return productRepo.findById(id).orElse(new Product(-1));
     }
 
-    // Add Product
-    public Product addProduct(Product product) {
-        return repo.save(product);
+    public Product addProduct(Product product, MultipartFile image) throws IOException {
+        product.setImageName(image.getOriginalFilename());
+        product.setImageType(image.getContentType());
+        product.setImageData(image.getBytes());
+
+        return productRepo.save(product);
     }
-
-    // Update Product
-    public Product updateProduct(Product product) {
-        Product existing = repo.findById(product.getId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        existing.setName(product.getName());
-        existing.setDescription(product.getDescription());
-        existing.setBrand(product.getBrand());
-        existing.setCategory(product.getCategory());
-        existing.setPrice(product.getPrice());
-        existing.setReleaseDate(product.getReleaseDate());
-        existing.setProductAvailable(product.isProductAvailable());
-        existing.setStockQuantity(product.getStockQuantity());
-
-        return repo.save(existing);
-    }
-
-    // Delete Product
-    public Product deleteProduct(int id) {
-        Product product = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        repo.delete(product);
-        return product;
-    }
-
-
-    // Find Products by Keyword
-    public List<Product> findByKeyword(String keyword) {
-        return repo.findByNameContainingOrDescriptionContaining(keyword, keyword);
-    }
-
-    // Find Products by Price
-    public List<Product> findByPrice(Double price) {
-        return repo.findByPrice(price);
-    }
-
 }
