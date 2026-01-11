@@ -24,6 +24,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
+    // Retrieve product by ID
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable int id) {
         Product product = productService.getProductById(id);
@@ -34,6 +35,7 @@ public class ProductController {
         }
     }
 
+    // Retrieve product image
     @GetMapping("/product/{productId}/image")
     public ResponseEntity<byte[]> getProductImage(@PathVariable int productId) {
         Product product = productService.getProductById(productId);
@@ -44,8 +46,7 @@ public class ProductController {
         }
     }
 
-
-
+    // Add a new product with image upload
     @PostMapping("/product")
     public ResponseEntity<?> addProduct(@RequestPart Product product, @RequestPart MultipartFile imageFile) {
         Product savedProduct = null;
@@ -56,5 +57,29 @@ public class ProductController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @PutMapping("/product/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable int id, @RequestPart Product product, @RequestPart MultipartFile imageFile) {
+        Product updatedProduct = null;
+        try{
+            updatedProduct = productService.updateProduct(product, imageFile);
+            return new ResponseEntity<>("Updated", HttpStatus.OK);
+        }
+        catch (IOException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable int id) {
+        Product deletedProduct = null;
+        try{
+            deletedProduct = productService.deleteProduct(id);
+            return new ResponseEntity<>("Deleted", HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
