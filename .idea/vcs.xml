@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/4_ReactUI/spring6-course" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Git Clone/spring6-course" vcs="Git" />
   </component>
 </project>

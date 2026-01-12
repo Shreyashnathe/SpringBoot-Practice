@@ -27,6 +27,7 @@ public class ProductService {
         return productRepo.findById(id).orElse(new Product(-1));
     }
 
+    // Add a new product with image upload
     public Product addProduct(Product product, MultipartFile image) throws IOException {
         product.setImageName(image.getOriginalFilename());
         product.setImageType(image.getContentType());
@@ -35,14 +36,29 @@ public class ProductService {
         return productRepo.save(product);
     }
 
-    public Product updateProduct(Product product, MultipartFile image) throws IOException {
-        product.setImageName(image.getOriginalFilename());
-        product.setImageType(image.getContentType());
-        product.setImageData(image.getBytes());
+    // Update product details
+    public Product updateProduct(int id, Product product, MultipartFile imageFile) throws IOException {
+        Product existing = productRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        return productRepo.save(product);
+        existing.setName(product.getName());
+        existing.setDescription(product.getDescription());
+        existing.setBrand(product.getBrand());
+        existing.setCategory(product.getCategory());
+        existing.setPrice(product.getPrice());
+        existing.setReleaseDate(product.getReleaseDate());
+        existing.setProductAvailable(product.isProductAvailable());
+        existing.setStockQuantity(product.getStockQuantity());
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            existing.setImageName(imageFile.getOriginalFilename());
+            existing.setImageType(imageFile.getContentType());
+            existing.setImageData(imageFile.getBytes());
+        }
+        return productRepo.save(existing);
     }
 
+    // Delete a product by ID
     public Product deleteProduct(int id) {
         Product product = getProductById(id);
         if (product.getId() > 0) {
@@ -52,6 +68,7 @@ public class ProductService {
         return new Product(-1);
     }
 
+    // Search products by keyword
     public List<Product> searchProducts(String keyword) {
         return productRepo.findByNameContainingOrDescriptionContainingOrCategoryContainingOrBrandContaining(
                 keyword, keyword, keyword, keyword);
