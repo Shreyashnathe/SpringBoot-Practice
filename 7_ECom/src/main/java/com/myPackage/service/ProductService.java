@@ -1,6 +1,8 @@
 package com.myPackage.service;
 
 import com.myPackage.model.Product;
+import com.myPackage.repo.OrderItemRepo;
+import com.myPackage.repo.OrderRepo;
 import com.myPackage.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class ProductService {
     @Autowired
     private ProductRepo productRepo;
 
+    @Autowired
+    private OrderItemRepo orderItemRepo;
+
     public List<Product> getAllProducts() {
         return productRepo.findAll();
     }
@@ -29,15 +34,18 @@ public class ProductService {
 
     // Add a new product with image upload
     public Product addProduct(Product product, MultipartFile image) throws IOException {
-        product.setImageName(image.getOriginalFilename());
-        product.setImageType(image.getContentType());
-        product.setImageData(image.getBytes());
-
+        if (image != null && !image.isEmpty()) {
+            product.setImageName(image.getOriginalFilename());
+            product.setImageType(image.getContentType());
+            product.setImageData(image.getBytes());
+        }
         return productRepo.save(product);
     }
 
+
     // Update product details
     public Product updateProduct(int id, Product product, MultipartFile imageFile) throws IOException {
+
         Product existing = productRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -55,18 +63,22 @@ public class ProductService {
             existing.setImageType(imageFile.getContentType());
             existing.setImageData(imageFile.getBytes());
         }
+
         return productRepo.save(existing);
     }
 
+
     // Delete a product by ID
-    public Product deleteProduct(int id) {
-        Product product = getProductById(id);
-        if (product.getId() > 0) {
-            productRepo.deleteById(id);
-            return product;
+    public void deleteProduct(int id) {
+
+        Product product = productRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        if (orderItemRepo.existsByProductId(id)) {
+            throw new IllegalStateException("Product is used in orders. Cannot delete.");
         }
-        return new Product(-1);
+        productRepo.delete(product);
     }
+
 
     // Search products by keyword
     public List<Product> searchProducts(String keyword) {

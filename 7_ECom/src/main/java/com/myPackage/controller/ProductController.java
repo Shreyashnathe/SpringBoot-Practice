@@ -39,12 +39,14 @@ public class ProductController {
     @GetMapping("/product/{productId}/image")
     public ResponseEntity<byte[]> getProductImage(@PathVariable int productId) {
         Product product = productService.getProductById(productId);
-        if (product.getId() > 0) {
-            return new ResponseEntity<>(product.getImageData(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (product.getId() > 0 && product.getImageData() != null) {
+            return ResponseEntity.ok()
+                    .header("Content-Type", product.getImageType())
+                    .body(product.getImageData());
         }
+        return ResponseEntity.notFound().build();
     }
+
 
     // Add a new product with image upload
     @PostMapping("/product")
@@ -67,24 +69,25 @@ public class ProductController {
 
         try {
             productService.updateProduct(id, product, imageFile);
-            return new ResponseEntity<>("Updated Successfully", HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok("Product updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 
 
     @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id) {
-        Product product = productService.getProductById(id);
-        if(product != null){
+        try {
             productService.deleteProduct(id);
-            return new ResponseEntity<>("Deleted", HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok("Product deleted successfully");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+
+
 
     @GetMapping("/products/search")
     public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
