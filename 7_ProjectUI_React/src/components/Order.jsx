@@ -162,7 +162,7 @@ const Order = () => {
                                       <td className="text-end fw-bold">{formatCurrency(calculateOrderTotal(order.items))}</td>
                                     </tr>
                                   </tbody>
-                                </table>
+                        ,        </table>
                               </div>
                             </div>
                           </td>
