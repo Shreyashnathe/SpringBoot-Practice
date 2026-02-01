@@ -33,9 +33,6 @@ public class JobService {
         return repo.findById(postId).orElse(new JobPost());
     }
 
-
-
-
     //method to update job with job post object
     public void updateJob(JobPost jobPost) {
         repo.save(jobPost);
@@ -67,7 +64,6 @@ public class JobService {
 
     // method to search job posts by keyword in profile or description
     public List<JobPost> search(String keyword) {
-
         return repo.findByPostProfileContainingOrPostDescContaining(keyword,keyword);
     }
 }
