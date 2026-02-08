@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,16 @@ public class SecurityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+//    @Bean
+//    public AuthenticationProvider authProvider() {
+//        // Setter method of DaoAuthenticationProvider is deprecated
+//        // Constructor is used
+//        DaoAuthenticationProvider provider=new DaoAuthenticationProvider(userDetailsService);
+//        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+//        return provider;
+//    }
+
 
     @Bean
     public AuthenticationProvider authProvider() {
