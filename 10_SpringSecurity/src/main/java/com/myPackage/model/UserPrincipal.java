@@ -28,19 +28,16 @@ public class UserPrincipal implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         return Collections.singleton(new SimpleGrantedAuthority("USER"));
     }
 
     @Override
     public String getPassword() {
-
         return "{noop}"+user.getPassword(); // {noop} is used to tell spring that the password is not encrypted
     }
 
     @Override
     public String getUsername() {
-
         return user.getUsername();
     }
 
