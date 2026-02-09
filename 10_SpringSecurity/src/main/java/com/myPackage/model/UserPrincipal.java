@@ -1,16 +1,11 @@
 package com.myPackage.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.jspecify.annotations.Nullable;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.Collections;
 
 public class UserPrincipal implements UserDetails{
 
@@ -28,12 +23,13 @@ public class UserPrincipal implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         return Collections.singleton(new SimpleGrantedAuthority("USER"));
     }
 
     @Override
     public String getPassword() {
-        return "{noop}"+user.getPassword(); // {noop} is used to tell spring that the password is not encrypted
+        return user.getPassword();
     }
 
     @Override

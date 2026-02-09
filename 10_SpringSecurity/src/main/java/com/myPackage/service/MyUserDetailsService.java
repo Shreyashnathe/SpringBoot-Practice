@@ -1,25 +1,27 @@
 package com.myPackage.service;
 
-import com.myPackage.model.User;
 import com.myPackage.dao.UserRepo;
+import com.myPackage.model.User;
 import com.myPackage.model.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class MyUserDetailsSrvice implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepo repo;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user= userRepo.findByUsername(username);
+
+        User user= repo.findByUsername(username);
 
         if (user==null) {
             System.out.println("User 404");

@@ -1,5 +1,6 @@
 package com.myPackage.service;
 
+
 import com.myPackage.dao.UserRepo;
 import com.myPackage.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    private UserRepo userRepo;
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    private UserRepo repo;
+    private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
 
     public User saveUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         System.out.println(user.getPassword());
-        return userRepo.save(user);
+        return repo.save(user) ;
     }
 }
