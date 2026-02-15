@@ -109,9 +109,27 @@ public class OllamaController {
         return response;
     }
 
-    //Create Embeddings for an Object
+    //Create Embeddings for an text using the embedding model, which can be used for various applications like text similarity, clustering, etc.
     @PostMapping("/api/embedding")
     public float[] createEmbedding(@RequestParam String text){
         return embeddingModel.embed(text);
+    }
+
+    //check the similarity between two texts using the embedding model
+    @PostMapping("/api/similarity")
+    public double checkSimilarity(@RequestParam String text1, @RequestParam String text2) {
+        float[] embedding1 = embeddingModel.embed(text1);
+        float[] embedding2 = embeddingModel.embed(text2);
+
+        // Calculate cosine similarity
+        double dotProduct = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+        for (int i = 0; i < embedding1.length; i++) {
+            dotProduct += embedding1[i] * embedding2[i];
+            normA += Math.pow(embedding1[i], 2);
+            normB += Math.pow(embedding2[i], 2);
+        }
+        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 }
