@@ -1,5 +1,6 @@
 package com.myPackage;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.TextReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
@@ -16,6 +17,7 @@ public class DataInitializer {
     @Autowired
     private VectorStore vectorStore;
 
+    @PostConstruct
     public void initData(){
         TextReader textReader = new TextReader(new ClassPathResource("product_details.txt"));
         TokenTextSplitter splitter = new TokenTextSplitter();
