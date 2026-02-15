@@ -14,8 +14,13 @@ public class OllamaController {
 
     private ChatClient chatClient;
 
-    public OllamaController(OllamaChatModel ollamaChatModel) {
-        this.chatClient = ChatClient.create(ollamaChatModel);
+//    public OllamaController(OllamaChatModel ollamaChatModel) {
+//        this.chatClient = ChatClient.create(ollamaChatModel);
+//    }
+
+    //Use ChatClient.Builder for only one model of AI
+    public OllamaController(ChatClient.Builder builder) {
+        this.chatClient = builder.build();
     }
 
     @GetMapping("/hello")
@@ -34,6 +39,8 @@ public class OllamaController {
 //        return ResponseEntity.ok(response);
 //    }
 
+
+    //Using ChatResponse to get more details about the response from Ollama
     @GetMapping("/ollama/{prompt}")
     public ResponseEntity<String> getResponseFromOllama(@PathVariable String prompt){
         ChatResponse chatResponse = chatClient
