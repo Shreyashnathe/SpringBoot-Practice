@@ -132,4 +132,13 @@ public class OllamaController {
         }
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
+
+
+    //Search Products using AI from the database ie our txt file product_details in the resources folder
+    @PostMapping("/api/product")
+    public String getProducts(@RequestParam String text){
+
+
+        return "";
+    }
 }
