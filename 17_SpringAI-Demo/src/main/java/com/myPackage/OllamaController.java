@@ -7,8 +7,10 @@ import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,21 +19,24 @@ import java.util.Map;
 @RestController
 public class OllamaController {
 
+    @Autowired
+    private EmbeddingModel embeddingModel;
+
     private ChatClient chatClient;
 
-//    public OllamaController(OllamaChatModel ollamaChatModel) {
-//        this.chatClient = ChatClient.create(ollamaChatModel);
-//    }
+    public OllamaController(OllamaChatModel ollamaChatModel) {
+        this.chatClient = ChatClient.create(ollamaChatModel);
+    }
 
     //Use ChatClient.Builder for only one model of AI
     //Use Advisors to add memory to the chat client, so that it can remember the previous conversations and provide better responses
-    ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
-
-    public OllamaController(ChatClient.Builder builder) {
-        this.chatClient = builder
-                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
-                .build();
-    }
+//    ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
+//
+//    public OllamaController(ChatClient.Builder builder) {
+//        this.chatClient = builder
+//                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+//                .build();
+//    }
 
     @GetMapping("/hello")
     public String hello(){
@@ -102,5 +107,11 @@ public class OllamaController {
                 .content();
 
         return response;
+    }
+
+    //Create Embeddings for an Object
+    @PostMapping("/api/embedding")
+    public float[] createEmbedding(@RequestParam String text){
+        return embeddingModel.embed(text);
     }
 }
