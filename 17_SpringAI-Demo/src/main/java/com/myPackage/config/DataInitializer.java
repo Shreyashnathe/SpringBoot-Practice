@@ -1,4 +1,4 @@
-package com.myPackage;
+package com.myPackage.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.ai.document.Document;
