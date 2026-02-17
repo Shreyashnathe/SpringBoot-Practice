@@ -144,8 +144,7 @@ public class OllamaController {
     //Search Products using AI from the database ie our txt file product_details in the resources folder
     @PostMapping("/api/product")
     public List<Document> getProducts(@RequestParam String text){
-
-//        return vectorStore.similaritySearch(text);
+        //return vectorStore.similaritySearch(text);
         return vectorStore.similaritySearch(SearchRequest.builder().query(text).topK(2).build());
     }
 }
